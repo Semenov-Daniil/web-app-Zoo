@@ -45,10 +45,10 @@ class Premises extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'number' => 'Number',
-            'is_pond' => 'Is Pond',
-            'is_heating' => 'Is Heating',
+            'title' => 'Название помещения',
+            'number' => 'Номер помещения',
+            'is_pond' => 'Наличие водоема',
+            'is_heating' => 'Наличие отопления',
         ];
     }
 

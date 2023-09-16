@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Kinds $model */
 
-$this->title = 'Update Kinds: ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Kinds', 'url' => ['index']];
+$this->title = 'Обновить вид: ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Виды животных', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Обновить';
 ?>
 <div class="kinds-update">
 

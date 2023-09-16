@@ -8,9 +8,7 @@ use Yii;
  * This is the model class for table "users".
  *
  * @property int $id
- * @property string $name
- * @property string $surname
- * @property string|null $patronymic
+ * @property string $fio
  * @property string $email
  * @property string $phone
  * @property string $login
@@ -33,8 +31,8 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['name', 'surname', 'email', 'phone', 'login', 'password'], 'required'],
-            [['name', 'surname', 'patronymic', 'email', 'login', 'password'], 'string', 'max' => 255],
+            [['fio', 'email', 'phone', 'login', 'password'], 'required'],
+            [['fio', 'email', 'login', 'password'], 'string', 'max' => 255],
             [['phone'], 'string', 'max' => 12],
         ];
     }
@@ -46,9 +44,7 @@ class Users extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'surname' => 'Surname',
-            'patronymic' => 'Patronymic',
+            'fio' => 'ФИО',
             'email' => 'Email',
             'phone' => 'Phone',
             'login' => 'Login',

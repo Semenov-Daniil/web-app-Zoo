@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Kinds $model */
 
-$this->title = 'Create Kinds';
-$this->params['breadcrumbs'][] = ['label' => 'Kinds', 'url' => ['index']];
+$this->title = 'Создание вида';
+$this->params['breadcrumbs'][] = ['label' => 'Виды животных', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="kinds-create">

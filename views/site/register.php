@@ -19,10 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?php $form = ActiveForm::begin(['id' => 'register-form']); ?>
 
-                    <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
-
-                    <?= $form->field($model, 'surname') ?>
-                    <?= $form->field($model, 'patronymic') ?>
+                    <?= $form->field($model, 'fio')->textInput(['autofocus' => true]) ?>
                     <?= $form->field($model, 'email') ?>
                     <?= $form->field($model, 'phone') ?>
                     <?= $form->field($model, 'login') ?>

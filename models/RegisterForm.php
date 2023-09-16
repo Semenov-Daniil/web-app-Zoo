@@ -10,9 +10,7 @@ use yii\base\Model;
  */
 class RegisterForm extends Model
 {
-    public $name;
-    public $surname;
-    public $patronymic;
+    public $fio;
     public $email;
     public $phone;
     public $login;
@@ -25,13 +23,13 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
-            [['name', 'surname', 'email', 'phone', 'login', 'password'], 'required'],
-            ['patronymic', 'default', 'value' => null],
+            [['fio', 'email', 'phone', 'login', 'password'], 'required'],
             ['email', 'email'],
             [['login'], 'unique', 'targetClass' => Users::class],
-            ['phone', 'match', 'pattern' => '/^[\+]{0,1}[0-9]{11}$/u'],
-            [['name', 'surname', 'patronymic', 'email', 'login', 'password'], 'string', 'max' => 255],
+            ['phone', 'match', 'pattern' => '/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/u'],
+            [['fio', 'patronymic', 'email', 'login', 'password'], 'string', 'max' => 255],
             [['password'], 'string', 'min' => 4],
+            [['fio'], 'match', 'pattern' => '/^[а-яА-ЯёЁ\s\-]+$/u'],
 
         ];
     }
@@ -42,9 +40,7 @@ class RegisterForm extends Model
     public function attributeLabels()
     {
         return [
-            'name' => 'Имя',
-            'surname' => 'Фамилий',
-            'patronymic' => 'Отчество',
+            'fio' => 'ФИО',
             'email' => 'E-mail',
             'phone' => 'Номер телефона',
             'login' => 'Логин',

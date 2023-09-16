@@ -45,9 +45,9 @@ class Accommodation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'kinds_id' => 'Kinds ID',
-            'premises_id' => 'Premises ID',
-            'count_animals' => 'Count Animals',
+            'kinds_id' => 'ID вид',
+            'premises_id' => 'ID помещение',
+            'count_animals' => 'Количество животных',
         ];
     }
 

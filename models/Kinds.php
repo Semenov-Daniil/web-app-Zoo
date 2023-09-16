@@ -44,10 +44,10 @@ class Kinds extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
-            'family' => 'Family',
-            'continent' => 'Continent',
-            'count_feed' => 'Count Feed',
+            'title' => 'Название вида',
+            'family' => 'Семейство',
+            'continent' => 'Континент обитания',
+            'count_feed' => 'Суточное потребление корма',
         ];
     }
 

@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\SearchPremises $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Premises';
+$this->title = 'Помещения';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="premises-index">
@@ -18,10 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Premises', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Создать запись', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,8 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             'title',
             'number',
-            'is_pond',
-            'is_heating',
+            [
+                'attribute' => 'is_pond',
+                'value' => function ($model) {
+                    return ($model['is_pond'] ? 'Есть' : 'Нет');
+                },
+            ],
+            [
+                'attribute' => 'is_heating',
+                'value' => function ($model) {
+                    return ($model['is_heating'] ? 'Есть' : 'Нет');
+                },
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Premises $model, $key, $index, $column) {

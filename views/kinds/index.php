@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var app\models\SearchKinds $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Kinds';
+$this->title = 'Виды животных';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="kinds-index">
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Добавить вид', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

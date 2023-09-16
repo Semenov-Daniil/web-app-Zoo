@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Premises $model */
 
-$this->title = 'Create Premises';
-$this->params['breadcrumbs'][] = ['label' => 'Premises', 'url' => ['index']];
+$this->title = 'Создать запись Помещения';
+$this->params['breadcrumbs'][] = ['label' => 'Помещения', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="premises-create">

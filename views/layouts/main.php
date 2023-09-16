@@ -36,16 +36,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'brandUrl' => Yii::$app->homeUrl,
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Главная', 'url' => ['/site/index']],
-            Yii::$app->user->isGuest 
-                ? ['label' => 'Регистрация', 'url' => ['/site/register']]
-                : '',
-            Yii::$app->user->isGuest
-                ? ['label' => 'Вход', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
+    if (Yii::$app->user->isGuest) {
+        $items = [
+            ['label' => 'Регистрация', 'url' => ['/site/register']],
+            ['label' => 'Вход', 'url' => ['/site/login']]
+        ];
+    } else {
+        $items = [
+            '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
                         'Выйти (' . Yii::$app->user->identity->login . ')',
@@ -60,7 +58,11 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Размещение видов', 'url' => ['/site/form-kinds-premises']],
             ['label' => 'Численность', 'url' => ['/site/form-count-kinds']],
             ['label' => 'Виды в помещении', 'url' => ['/site/form-premises-kinds']],
-        ]
+        ];
+    }
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav'],
+        'items' => $items,
     ]);
     NavBar::end();
     ?>
