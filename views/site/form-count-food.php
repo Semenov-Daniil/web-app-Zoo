@@ -25,6 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php ActiveForm::end(); ?>
 
+            <?php echo Html::button('Export', array('id'=>'export-button','class'=>'span-3 button')); ?>
+
         </div>
     </div>
 </div>

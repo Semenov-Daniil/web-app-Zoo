@@ -88,6 +88,12 @@ class SiteController extends Controller
         }
 
         $model->password = '';
+
+        if ((Yii::$app->session)['enter'] == 3) {
+            (Yii::$app->session)->destroy();
+            return $this->goHome();
+        }
+        
         return $this->render('login', [
             'model' => $model,
         ]);

@@ -15,6 +15,7 @@ class RegisterForm extends Model
     public $phone;
     public $login;
     public $password;
+    public $password_repeat;
 
 
     /**
@@ -23,12 +24,13 @@ class RegisterForm extends Model
     public function rules()
     {
         return [
-            [['fio', 'email', 'phone', 'login', 'password'], 'required'],
+            [['fio', 'email', 'phone', 'login', 'password', 'password_repeat'], 'required'],
             ['email', 'email'],
             [['login'], 'unique', 'targetClass' => Users::class],
             ['phone', 'match', 'pattern' => '/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/u'],
             [['fio', 'patronymic', 'email', 'login', 'password'], 'string', 'max' => 255],
             [['password'], 'string', 'min' => 4],
+            [['password_repeat'], 'compare', 'compareAttribute' => 'password'],
             [['fio'], 'match', 'pattern' => '/^[а-яА-ЯёЁ\s\-]+$/u'],
 
         ];
@@ -45,6 +47,7 @@ class RegisterForm extends Model
             'phone' => 'Номер телефона',
             'login' => 'Логин',
             'password' => 'Пароль',
+            'password_repeat' => 'Потдвержение пароля',
         ];
     }
     
