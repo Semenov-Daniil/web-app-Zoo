@@ -65,4 +65,15 @@ class Kinds extends \yii\db\ActiveRecord
     {
         return static::find()->where(['family' => $family])->count();
     }
+
+    public static function countFood($premises)
+    {
+        return static::find()
+            ->select([
+                'kinds.id as kinds_id', 'kinds.title as kinds_title', 'count_feed', 'premises.title as premises_title' 
+            ])
+            ->innerJoin('accommodation', 'accommodation.kinds_id = kinds.id')
+            ->innerJoin('premises', 'premises.id = accommodation.premises_id')
+            ->where(['premises.title' => $premises]);
+    }
 }

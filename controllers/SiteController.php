@@ -13,6 +13,8 @@ use app\models\ContactForm;
 use app\models\Kinds;
 use app\models\Premises;
 use app\models\RegisterForm;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 
 class SiteController extends Controller
@@ -147,33 +149,68 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    public function actionCount()
+    public function actionFormCountFood()
     {
         $model = new Premises();
-        $listTitle = ArrayHelper::map(Premises::find()->orderBy('title')->all(), 'title', 'title');
-        $countFeed = '';
-        $promt = '';
-
         if (Yii::$app->request->isPost) {
-            $promt = Yii::$app->request->post()['Premises']['title'];
-            $countFeed = Accommodation::countFeet(Yii::$app->request->post()['Premises']['title']);
+            $model = new Kinds();
+            $premises = Yii::$app->request->post()['Premises']['title'];
+            $query = Kinds::countFood($premises);
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => $query->asArray()->all(),
+                'pagination' => false,
+            ]);
+            return $this->render('view-count-food', ['premises' => $premises, 'dataProvider' => $dataProvider, 'sum' => $query->sum('count_feed')]);
         }
 
-        return $this->render('countFeed', ['model' => $model, 'listTitle' => $listTitle, 'countFeed' => $countFeed, 'promt' => $promt]);
+        $listTitle = ArrayHelper::map(Premises::find()->orderBy('title')->all(), 'title', 'title');
+        return $this->render('form-count-food', ['model' => $model, 'listTitle' => $listTitle]);
     }
 
-    public function actionCountKinds()
+    public function actionFormKindsPremises()
+    {
+        $kinds = new Kinds();
+        $premises = new Premises();
+        $premises->is_pond = 0;
+        $listTitle = ArrayHelper::map(Kinds::find()->orderBy('title')->all(), 'title', 'title');
+        $radioList = ['Без водоема', 'C водоем'];
+        if (Yii::$app->request->isPost) {
+            $data = Accommodation::kindsPremises(Yii::$app->request->post()['Kinds']['title'], Yii::$app->request->post()['Premises']['is_pond']);
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => $data,
+                'pagination' => false
+            ]);
+            return $this->render('view-kinds-premises', ['dataProvider' => $dataProvider]);
+        }
+        return $this->render('form-kinds-premises', ['kinds' => $kinds, 'premises' => $premises, 'listTitle' => $listTitle, 'radioList' => $radioList]);
+    }
+
+    public function actionFormCountKinds()
     {
         $model = new Kinds();
         $listTitle = ArrayHelper::map(Kinds::find()->orderBy('family')->all(), 'family', 'family');
-        $countKinds = '';
-        $promt = '';
 
         if (Yii::$app->request->isPost) {
-            $promt = Yii::$app->request->post()['Kinds']['family'];
-            $countKinds = Kinds::countKinds(Yii::$app->request->post()['Kinds']['family']);
+            $family = Yii::$app->request->post()['Kinds']['family'];
+            $count = Kinds::countKinds($family);
+            return $this->render('view-count-kinds', ['family' => $family, 'count' => $count]);
         }
 
-        return $this->render('countKinds', ['model' => $model, 'listTitle' => $listTitle, 'countKinds' => $countKinds, 'promt' => $promt]);
+        return $this->render('form-count-kinds', ['model' => $model, 'listTitle' => $listTitle]);
+    }
+
+    public function actionFormPremisesKinds()
+    {
+        $premises = new Premises();
+        $listTitle = ArrayHelper::map(Premises::find()->orderBy('title')->all(), 'title', 'title');
+        if (Yii::$app->request->isPost) {
+            $data = Accommodation::premisesKinds(Yii::$app->request->post()['Premises']['title']);
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => $data,
+                'pagination' => false
+            ]);
+            return $this->render('view-premises-kinds', ['dataProvider' => $dataProvider]);
+        }
+        return $this->render('form-premises-kinds', ['premises' => $premises, 'listTitle' => $listTitle]);
     }
 }

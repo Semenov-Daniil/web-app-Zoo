@@ -79,4 +79,27 @@ class Accommodation extends \yii\db\ActiveRecord
             ->where(['premises.title' => $title])
             ->sum("count_feed");
     }
+
+    public static function kindsPremises($kinds_title, $is_pond)
+    {
+        return static::find()
+            ->select(['kinds.id as kinds_id', 'kinds.title as kinds_title', 'premises.title as premises_title', 'premises.is_pond'])
+            ->innerJoin('premises', 'premises.id = accommodation.premises_id')
+            ->innerJoin('kinds', 'kinds.id = accommodation.kinds_id')
+            ->where(['kinds.title' => $kinds_title])
+            ->andWhere(['premises.is_pond' => $is_pond])
+            ->asArray()
+            ->all();
+    }
+
+    public static function premisesKinds($premises)
+    {
+        return static::find()
+            ->select(['kinds.id as kinds_id', 'kinds.title as kinds_title', 'premises.title as premises_title'])
+            ->innerJoin('premises', 'premises.id = accommodation.premises_id')
+            ->innerJoin('kinds', 'kinds.id = accommodation.kinds_id')
+            ->andWhere(['premises.title' => $premises])
+            ->asArray()
+            ->all();
+    }
 }

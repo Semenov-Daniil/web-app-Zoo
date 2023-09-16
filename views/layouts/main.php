@@ -40,7 +40,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
-            ['label' => 'Регистрация', 'url' => ['/site/register']],
+            Yii::$app->user->isGuest 
+                ? ['label' => 'Регистрация', 'url' => ['/site/register']]
+                : '',
             Yii::$app->user->isGuest
                 ? ['label' => 'Вход', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
@@ -54,8 +56,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Виды животных', 'url' => ['/kinds/index']],
             ['label' => 'Помещения', 'url' => ['/premises/index']],
             ['label' => 'Размещение', 'url' => ['/accommodation/index']],
-            ['label' => 'Кол-во корма', 'url' => ['/site/count']],
-            ['label' => 'Кол-во вида', 'url' => ['/site/count-kinds']],
+            ['label' => 'Форма расчета корма', 'url' => ['/site/form-count-food']],
+            ['label' => 'Размещение видов', 'url' => ['/site/form-kinds-premises']],
+            ['label' => 'Численность', 'url' => ['/site/form-count-kinds']],
+            ['label' => 'Виды в помещении', 'url' => ['/site/form-premises-kinds']],
         ]
     ]);
     NavBar::end();
