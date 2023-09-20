@@ -63,7 +63,13 @@ class Kinds extends \yii\db\ActiveRecord
 
     public static function countKinds($family)
     {
-        return static::find()->where(['family' => $family])->count();
+        return static::find()
+        ->select([
+            'family', 'COUNT(*) as count_kinds'
+        ])
+        ->where(['family' => $family])
+        ->asArray()
+        ->all();
     }
 
     public static function countFood($premises)

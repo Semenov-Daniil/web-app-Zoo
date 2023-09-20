@@ -162,6 +162,7 @@ class SiteController extends Controller
             $model = new Kinds();
             $premises = Yii::$app->request->post()['Premises']['title'];
             $query = Kinds::countFood($premises);
+            (Yii::$app->session)['array'] = $query->asArray()->all();
             $dataProvider = new ArrayDataProvider([
                 'allModels' => $query->asArray()->all(),
                 'pagination' => false,
@@ -182,6 +183,7 @@ class SiteController extends Controller
         $radioList = ['Без водоема', 'C водоем'];
         if (Yii::$app->request->isPost) {
             $data = Accommodation::kindsPremises(Yii::$app->request->post()['Kinds']['title'], Yii::$app->request->post()['Premises']['is_pond']);
+            (Yii::$app->session)['array'] = $data;
             $dataProvider = new ArrayDataProvider([
                 'allModels' => $data,
                 'pagination' => false
@@ -198,8 +200,13 @@ class SiteController extends Controller
 
         if (Yii::$app->request->isPost) {
             $family = Yii::$app->request->post()['Kinds']['family'];
-            $count = Kinds::countKinds($family);
-            return $this->render('view-count-kinds', ['family' => $family, 'count' => $count]);
+            $data = Kinds::countKinds($family);
+            (Yii::$app->session)['array'] = $data;
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => $data,
+                'pagination' => false
+            ]);
+            return $this->render('view-count-kinds', ['dataProvider' => $dataProvider]);
         }
 
         return $this->render('form-count-kinds', ['model' => $model, 'listTitle' => $listTitle]);
@@ -211,6 +218,7 @@ class SiteController extends Controller
         $listTitle = ArrayHelper::map(Premises::find()->orderBy('title')->all(), 'title', 'title');
         if (Yii::$app->request->isPost) {
             $data = Accommodation::premisesKinds(Yii::$app->request->post()['Premises']['title']);
+            (Yii::$app->session)['array'] = $data;
             $dataProvider = new ArrayDataProvider([
                 'allModels' => $data,
                 'pagination' => false
@@ -218,5 +226,80 @@ class SiteController extends Controller
             return $this->render('view-premises-kinds', ['dataProvider' => $dataProvider]);
         }
         return $this->render('form-premises-kinds', ['premises' => $premises, 'listTitle' => $listTitle]);
+    }
+
+    public function actionExport1()
+    {
+        $list = (Yii::$app->session)['array'];
+        $fileName = Yii::$app->request->get('title') . '.cvs';
+        
+        $fp = fopen(Yii::getAlias('@app') . '\export_file\\' . $fileName, 'w+');
+
+        if ($list) {
+            fputcsv($fp, $this->lable(array_keys($list[0])), ';');
+            foreach ($list as $fields) {
+                fputcsv($fp, $fields, ';');
+            }
+        }
+
+        fclose($fp);
+
+        $filePath = Yii::getAlias('@app') . '\export_file\\' . $fileName;
+        // $fileName = 'file.csv';
+
+        $response = Yii::$app->response;
+        $response->format = Response::FORMAT_RAW;
+        $response->headers->add('Content-Type', 'text/csv');
+        $response->headers->add('Content-Disposition', "attachment; filename=$fileName");
+
+        $response->sendFile($filePath)->send();
+    }
+
+    public function actionExport2()
+    {
+        $list = (Yii::$app->session)['array'];
+        $fileName = Yii::$app->request->get('title') . '.cvs';
+        $text = '';
+        
+        if ($list) {
+            $text = implode(';', $this->lable(array_keys($list[0]))) . PHP_EOL;
+            foreach ($list as $fields) {
+                $text .= implode(';', $fields) . PHP_EOL;
+            }
+        }
+
+        $response = Yii::$app->response;
+
+        $filePath = Yii::getAlias('@app') . '\export_file\\' . $fileName;
+
+        $response->headers->add('Content-Type', 'text/csv');
+        $response->headers->add('Content-Disposition', "attachment; filename=$fileName");
+
+        $response->sendContentAsFile($text, $fileName)->send();
+    }
+
+    public function lable($array)
+    {
+        $lable = [
+            'premises_title' => 'Название помещения',
+            'kinds_id' => 'ID вида',
+            'kinds_title' => 'Название вида',
+            'count_feed' => 'Кол-во корма за сутки',
+            'family' => 'Семейство',
+            'count_kinds' => 'Кол-во вида',
+            'is_pond' => 'Водоем',
+
+        ];
+
+        foreach ($array as $key => $val) {
+            foreach ($lable as $key2 => $val2) {
+                if ($val == $key2) {
+                    $array[$key] = $val2;
+                    continue;
+                }
+            }
+        }
+
+        return $array;
     }
 }

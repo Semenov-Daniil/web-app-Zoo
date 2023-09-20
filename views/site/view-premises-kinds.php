@@ -30,4 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]);?>
 
+    <?=Html::a('Экспорт1', ['site/export1', 'title' => 'premises_kinds'], ['class' => 'btn btn-primary']);?>
+    <?=Html::a('Экспорт2', ['site/export2', 'title' => 'premises_kinds'], ['class' => 'btn btn-primary']);?>
+
 </div>
